@@ -67,4 +67,12 @@ cleanup:
 	cf delete-service --force $(APP_SERVICE_REGISTRY)
 # cleanup
 
+scale:
+	cf scale $(APP_FORTUNE_SERVICE) -i 3
+# scale
+
+logs:
+	cf logs $(APP_GREETING_SERVICE) | grep GreetingController
+# logs
+
 # Makefile
