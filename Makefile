@@ -61,10 +61,10 @@ deploy_service_registry:
 # deploy_service_registry
 
 cleanup:
-	cf delete --force $(APP_FORTUNE_SERVICE)
-	cf delete --force $(APP_GREETING_SERVICE)
-	cf delete-service --force $(APP_CONFIG_SERVER)
-	cf delete-service --force $(APP_SERVICE_REGISTRY)
+	cf delete $(APP_FORTUNE_SERVICE) -f
+	cf delete $(APP_GREETING_SERVICE) -f
+	cf delete-service $(APP_CONFIG_SERVER) -f
+	cf delete-service $(APP_SERVICE_REGISTRY) -f
 # cleanup
 
 scale:
