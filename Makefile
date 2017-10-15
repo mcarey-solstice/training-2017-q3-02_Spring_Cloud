@@ -34,7 +34,7 @@ deploy: deploy_service_registry deploy_config_server deploy_fortune_service depl
 
 deploy_fortune_service:
 	cd $(FORTUNE_SERVICE) && mvn clean package
-	cd $(FORTUNE_SERVICE) && cf push $(APP_FORTUNE_SERVICE) -p target/$(APP_FORTUNE_SERVICE)-0.0.1-SNAPSHOT.jar -m 512M --random-route --no-start
+	cd $(FORTUNE_SERVICE) && cf push $(APP_FORTUNE_SERVICE) -p target/$(APP_FORTUNE_SERVICE)-0.0.1-SNAPSHOT.jar -m 1G --random-route --no-start
 	cf bind-service $(APP_FORTUNE_SERVICE) $(APP_CONFIG_SERVER)
 	cf bind-service $(APP_FORTUNE_SERVICE) $(APP_SERVICE_REGISTRY)
 	cf set-env $(APP_FORTUNE_SERVICE) TRUST_CERTS $$($(getFortuneUrl))
@@ -43,7 +43,7 @@ deploy_fortune_service:
 
 deploy_greeting_service:
 	cd $(GREETING_SERVICE) && mvn clean package
-	cd $(GREETING_SERVICE) && cf push $(APP_GREETING_SERVICE) -p target/$(APP_GREETING_SERVICE)-0.0.1-SNAPSHOT.jar -m 512M --random-route --no-start
+	cd $(GREETING_SERVICE) && cf push $(APP_GREETING_SERVICE) -p target/$(APP_GREETING_SERVICE)-0.0.1-SNAPSHOT.jar -m 1G --random-route --no-start
 	cf bind-service $(APP_GREETING_SERVICE) $(APP_CONFIG_SERVER)
 	cf bind-service $(APP_GREETING_SERVICE) $(APP_SERVICE_REGISTRY)
 	cf set-env $(APP_GREETING_SERVICE) TRUST_CERTS $$($(getGreetingUrl))
@@ -59,5 +59,12 @@ deploy_service_registry:
 	cf create-service p-service-registry standard $(APP_SERVICE_REGISTRY)
 	$(call assertIsStarted,$(APP_SERVICE_REGISTRY))
 # deploy_service_registry
+
+cleanup:
+	cf delete --force $(APP_FORTUNE_SERVICE)
+	cf delete --force $(APP_GREETING_SERVICE)
+	cf delete-service --force $(APP_CONFIG_SERVER)
+	cf delete-service --force $(APP_SERVICE_REGISTRY)
+# cleanup
 
 # Makefile
